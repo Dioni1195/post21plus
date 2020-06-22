@@ -12,6 +12,8 @@ const express = require("express"),
     userRoutes = require('./routes/userRoutes');
     loginRoutes = require('./routes/loginRoutes');
 const path = require('path');
+
+console.log(process.env)
 // const AWS = require('aws-sdk');
 
 // const myBucket = 'dionibucket';
