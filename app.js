@@ -12,20 +12,20 @@ const express = require("express"),
     userRoutes = require('./routes/userRoutes');
     loginRoutes = require('./routes/loginRoutes');
 const path = require('path');
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 
-const myBucket = 'dionibucket';
-var myKey = 'file1.json';
+// const myBucket = 'dionibucket';
+// var myKey = 'file1.json';
 
-AWS.config = new AWS.Config();
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
-AWS.config.secretAccessKey = process.env.AWS_SECRET_KEY;
-AWS.config.region = "us-east-2";
-AWS.config.apiVersions = {
-  "s3": "2006-03-01"
-}
+// AWS.config = new AWS.Config();
+// AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
+// AWS.config.secretAccessKey = process.env.AWS_SECRET_KEY;
+// AWS.config.region = "us-east-2";
+// AWS.config.apiVersions = {
+//   "s3": "2006-03-01"
+// }
 
-const s3 = new AWS.S3();
+//const s3 = new AWS.S3();
 // AWS.config.update({
 //   accessKeyId: process.env.AWS_ACCESS_KEY,
 //   accessSecretKey: process.env.AWS_SECRET_KEY,
@@ -52,72 +52,72 @@ app.get('/', function(req, res) {
     res.status(200).sendFile(path.join(__dirname, 'build', 'index.html'));
   });
 
-  app.get('/viewFiles', function(req, res){
-    var bucketParams = {
-      Bucket : myBucket,
-    };
+  // app.get('/viewFiles', function(req, res){
+  //   var bucketParams = {
+  //     Bucket : myBucket,
+  //   };
 
-    s3.listObjects(bucketParams, function(err, data) {
-      if (err) {
-        console.log("Error", err);
-      } else {
-        console.log("Success", data);
-        var href = this.request.httpRequest.endpoint.href;
-        var bucketUrl = href + myBucket + "/";
+  //   s3.listObjects(bucketParams, function(err, data) {
+  //     if (err) {
+  //       console.log("Error", err);
+  //     } else {
+  //       console.log("Success", data);
+  //       var href = this.request.httpRequest.endpoint.href;
+  //       var bucketUrl = href + myBucket + "/";
 
-        var photos = data.Contents.map(function(photo){
-          var photoKey = photo.Key;
-          var photoURL = bucketUrl + encodeURIComponent(photoKey);
-          res.send({data: photoURL})
-        })
+  //       var photos = data.Contents.map(function(photo){
+  //         var photoKey = photo.Key;
+  //         var photoURL = bucketUrl + encodeURIComponent(photoKey);
+  //         res.send({data: photoURL})
+  //       })
         
         
-      }
-    });
-  })
+  //     }
+  //   });
+  // })
 
 
-  app.get('/createFile', function (req, res) {
+  // app.get('/createFile', function (req, res) {
   
-      let params = {
-        Bucket: myBucket,
-        Key: "DioniOpodero.json",
-        ACL: 'public-read',
-        ContentType: 'application/json',
-        Body: '{data: "Hola", process: 400}',
-      };
+  //     let params = {
+  //       Bucket: myBucket,
+  //       Key: "DioniOpodero.json",
+  //       ACL: 'public-read',
+  //       ContentType: 'application/json',
+  //       Body: '{data: "Hola", process: 400}',
+  //     };
   
-      s3.putObject(params, function (err, data) {
-        if (err) {
-          console.log(err);
-          res.send({ title: 'Error' });
-          return 0;
-        }
+  //     s3.putObject(params, function (err, data) {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send({ title: 'Error' });
+  //         return 0;
+  //       }
 
-        var url = s3.getSignedUrl('putObject', params);
-        console.log('The URL is', url);
-        res.send({ title: data });
-      });  
-  });
+  //       var url = s3.getSignedUrl('putObject', params);
+  //       console.log('The URL is', url);
+  //       res.send({ title: data });
+  //     });  
+  // });
 
 
-  app.get('/getObject', function(req, res) {
+  // app.get('/getObject', function(req, res) {
     
-    var params = {
-      Bucket: myBucket, 
-      Key: "file1.json", 
-     };
+  //   var params = {
+  //     Bucket: myBucket, 
+  //     Key: "file1.json", 
+  //    };
 
     
-    var url = s3.getSignedUrl('getObject', params);
-    console.log('The URL is', url);
-    res.send(url)
+  //   var url = s3.getSignedUrl('getObject', params);
+  //   console.log('The URL is', url);
+  //   res.send(url)
 
-    //  s3.getObject(params, function(err, data){
-    //   if (err) res.send(err, err.stack); // an error occurred
-    //   else     res.send(data);           // successful response
-    //  })
-  })
+  //   //  s3.getObject(params, function(err, data){
+  //   //   if (err) res.send(err, err.stack); // an error occurred
+  //   //   else     res.send(data);           // successful response
+  //   //  })
+  // })
 
 
 //Starting the API and the connection with the DB
