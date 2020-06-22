@@ -57,7 +57,7 @@ function uploadFile(file){
 
 export default function CreatePost () {
   const [file, setFile] = useState("");
-  const url = "http://localhost:5000/api/user/post"
+  const url = "https://post21plus.herokuapp.com/api/user/post"
 
 
   function onChangeHandler(event){

@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const history = useHistory();
-  const url = "http://localhost:5000/api/auth"
+  const url = "https://post21plus.herokuapp.com/api/auth"
 
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
