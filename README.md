@@ -34,12 +34,15 @@ https://post21plus.herokuapp.com/
 
 # API Routes
 They are the API routes used:
-| Route | Method | Attributes | Description
-| ------ | ------|---- |-----
-| 'api/auth' | POST | email: string - password: string | This route is in charge to validate if the user is registrated
-| 'api/user' | POST | email: string - password: string - name:string | This route creates the user in the DB
-| 'api/user/post' | POST | email: string - image: string - title: string -content: string | This route creates a post in the DB and it is portected, so the user must be logged to request it
-| '/post/:id/:page' | GET | id: string - page: string | This route lists the post associated to an user with the id of the user and the page to make the correct pagination
-| '/user/:ownerId/post/:id' | DELETE | ownerId: string - id: string | This route delete a post associated to an user (ownerId) with their id (id)
+| Route | Method | Attributes | Description | Return
+| ------ | ------|---- |-----|----
+| 'api/auth' | POST | email: string - password: string | This route is in charge to validate if the user is registrated | { token: token, status: 'OK', message: 'Logged in'}
+| 'api/user' | POST | email: string - password: string - name:string | This route creates the user in the DB | {status: 'OK', message: User newUser name created}
+| 'api/user/post' | POST | email: string - image: string - title: string -content: string | This route creates a post in the DB and it is portected, so the user must be logged to request it | { status: 'OK', message: 'The post has been created'}
+| '/post/:id/:page' | GET | id: string - page: string | This route lists the post associated to an user with the id of the user and the page to make the correct pagination | {status: 'OK', listPost: pager, pageItems: pageOfItems}
+| '/user/:ownerId/post/:id' | DELETE | ownerId: string - id: string | This route delete a post associated to an user (ownerId) with their id (id) | {}
+
+# Author
+Dionisio Andrés Arango Rojas
 
 
