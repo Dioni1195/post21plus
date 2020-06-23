@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
       
 
 exports.withAuth = function(req, res, next) {
-  const token = req.body.token;
+  const token = req.cookies.token;
 
   if (!token) {
     res.status(401).send('Unauthorized: No token provided');

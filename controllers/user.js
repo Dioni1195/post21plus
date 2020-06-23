@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
     User = mongoose.model('User');
     Post = mongoose.model('Post');
+    paginate = require('jw-paginate');
 
 //POST Create a User
 
@@ -95,8 +96,12 @@ exports.listPost = async function(req, res){
     })
 
     const posts = user.posts;
+    const page = parseInt(req.params.page) || 1;
+    const pageSize = 10;
+    const pager = paginate(posts.length, page, pageSize);
+    const pageOfItems = posts.slice(pager.startIndex, pager.endIndex + 1);
 
-    res.status(200).json({status: 'OK', listPost: posts})
+    res.status(200).json({status: 'OK', listPost: pager, pageItems: pageOfItems})
 }
 
 
