@@ -54,10 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignUp() {
   const classes = useStyles();
   const history = useHistory();
-  const url = "https://post21plus.herokuapp.com/api/auth"
+  const url = "https://post21plus.herokuapp.com/api/user"
 
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
@@ -71,44 +71,56 @@ export default function SignIn() {
   }
   
 
-  const signin =  () => {
+  const signup =  () => {
     // alert(`User Created!
     //        Password: ${inputs.password}
     //        Email: ${inputs.email}`);
+    if (inputs.password === inputs.confirmPassword)
+    {
+        try {
+        postData(url, inputs)
+        .then((res) => {
+            if (res.status === "OK"){
+            console.log(res)
+            MySwal.fire({
+                icon: 'success',
+                title: 'User created!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            //const {id, email} = jwt(res.token);
+            history.push("/");
+            }else {
+            MySwal.fire({
+                icon: 'Check again :)',
+                title: res.message
+            })
+            }
+        })
+        
+        }catch(Error){
 
-    try {
-      postData(url, inputs)
-      .then((res) => {
-        if (res.status === "OK"){
-          console.log(res)
-          localStorage.setItem("token", res.token)
-          //const {id, email} = jwt(res.token);
-          history.push("/feed");
-        }else {
-          MySwal.fire({
-            icon: 'Check again :)',
-            title: "Not a valid e-mail or password"
-          })
         }
-      })
-      
-    }catch(Error){
-
+    } else {
+        MySwal.fire({
+            icon: 'error',
+            title: 'Check your password',
+            showConfirmButton: false,
+            timer: 1500
+        })
     }
   }
-  const {inputs, handleInputChange, handleSubmit} = useFormHandler(signin);
+  const {inputs, handleInputChange, handleSubmit} = useFormHandler(signup);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} validate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -122,6 +134,18 @@ export default function SignIn() {
             value={inputs.email}
             autoFocus
           />
+            <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            onChange={handleInputChange}
+            value={inputs.name}
+            autoFocus
+          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -131,13 +155,20 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             onChange={handleInputChange}
             value={inputs.password}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            onChange={handleInputChange}
+            value={inputs.confirmPassword}
           />
           <Button
             type="submit"
@@ -155,8 +186,8 @@ export default function SignIn() {
               </Link>
             </Grid> */}
             <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href="/" variant="body2">
+                {"Do you have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>

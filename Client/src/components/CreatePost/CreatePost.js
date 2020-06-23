@@ -6,14 +6,18 @@ import useFormHandler from '../../utils/useFormHandler';
 import jwt from 'jwt-decode'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+require('dotenv').config();
+const s3_acces = process.env.REACT_APP_S3_KEY;
+const s3_key = process.env.REACT_APP_S3_SECRET;
 const AWS = require('aws-sdk');
 AWS.config = new AWS.Config();
-AWS.config.accessKeyId = process.env.AWS_ACCESS_KEY;
-AWS.config.secretAccessKey = process.env.AWS_SECRET_KEY;
+AWS.config.accessKeyId = s3_acces;
+AWS.config.secretAccessKey = s3_key;
 AWS.config.region = "us-east-2";
 AWS.config.apiVersions = {
   "s3": "2006-03-01"
 }
+
 
 //const s3 = new AWS.S3();
 const MySwal = withReactContent(Swal);
@@ -37,7 +41,7 @@ function uploadFile(file){
       console.log("Successfully uploaded photo.");
     },
     function(err) {
-      return alert("There was an error uploading your photo: ", err.message);
+      console.log("There was an error uploading your photo: ", err.message);
     }
   );
 }
@@ -65,6 +69,7 @@ export default function CreatePost () {
     const {email} = jwt(localStorage.getItem('token'));
     inputs.email = email;
     inputs.image = event.target.files[0].name;
+    inputs.file = event.target.files[0];
   }
 
 //   function getObject(){
@@ -84,6 +89,7 @@ export default function CreatePost () {
 
   function submitPost(){
     uploadFile(file);
+    //console.log(inputs);
     try {
       inputs.token = localStorage.getItem('token');
       postData(url, inputs)
@@ -102,6 +108,9 @@ export default function CreatePost () {
             title: res.message
           })
         }
+        inputs.title = "";
+        inputs.content = "";
+        inputs.file = {};
       })
       
     }catch(Error){
