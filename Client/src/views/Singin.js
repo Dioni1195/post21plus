@@ -59,6 +59,11 @@ export default function SignIn() {
   const history = useHistory();
   const url = "https://post21plus.herokuapp.com/api/auth"
 
+
+  function signUp(){
+    history.push("/signup");
+  }
+
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -155,7 +160,7 @@ export default function SignIn() {
               </Link>
             </Grid> */}
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link onClick={signUp} variant="body2" style={{cursor:'pointer'}}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
