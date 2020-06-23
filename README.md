@@ -34,15 +34,12 @@ https://post21plus.herokuapp.com/
 
 # API Routes
 They are the API routes used:
-Dillinger uses a number of open source projects to work properly:
-
-| Route | Attributes | Description
-| ------ | ------ |-----
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
+| Route | Method | Attributes | Description
+| ------ | ------|---- |-----
+| 'api/auth' | POST | email: string - password: string | This route is in charge to validate if the user is registrated
+| 'api/user' | POST | email: string - password: string - name:string | This route creates the user in the DB
+| 'api/user/post' | POST | email: string - image: string - title: string -content: string | This route creates a post in the DB and it is portected, so the user must be logged to request it
+| '/post/:id/:page' | GET | id: string - page: string | This route lists the post associated to an user with the id of the user and the page to make the correct pagination
+| '/user/:ownerId/post/:id' | DELETE | ownerId: string - id: string | This route delete a post associated to an user (ownerId) with their id (id)
 
 
